@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>J-Techプリント</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+</head>
+<body>
+    
+  <nav>
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo">Jtechプリント</a>
+        <a id="add" class="waves-effect waves-light btn">＋追加</a>
+      </div>
+    </nav>
+
+  <ul></ul>
+
+  <script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+
+    //Add item button
+    document.querySelector('#add').addEventListener('click', addItem);
+    function addItem () {
+      ipcRenderer.send('open:addWindow')
+    }
+
+    //For item listing
+    const ul = document.querySelector('ul');
+    ipcRenderer.on('item:add', function(e, item){
+      ul.className = 'collection';
+      const li = document.createElement('li');
+      li.className = 'collection-item';
+      const itemText = document.createTextNode(item);
+      li.appendChild(itemText);
+      ul.appendChild(li);
+    });
+    ipcRenderer.on('item:clear', function(){
+      ul.className = '';
+      ul.innerHTML = '';
+    });
+    ul.addEventListener('dblclick', removeItem);
+    function removeItem(e){
+      event.target.remove();
+      if(ul.children.length == 0){
+        ul.className = '';
+      }
+    }
+  </script>
+</body>
+</html>

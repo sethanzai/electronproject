@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Add Shopping Item</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+</head>
+<body>
+  <div class="container">
+    <form>
+      <div>
+        <label>リストのクリア</label>
+        <p>本当によろしいですか？</p>
+      </div>
+      <button id='clear' class="waves-effect waves-light btn">決定</button>
+      <button id='cancel' class="waves-effect waves-light btn">キャンセル</button>
+    </form>
+  </div>
+
+  <script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+    document.querySelector('#clear').addEventListener('click', clearList);
+    document.querySelector('#cancel').addEventListener('click', function(){window.close()});
+    function clearList(){
+      ipcRenderer.send('item:clear');
+      window.close();
+    }
+  </script>
+</body>
+</html>
